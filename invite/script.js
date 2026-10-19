@@ -1,8 +1,9 @@
 (function(){
+  var lite=window.matchMedia&&matchMedia('(pointer:coarse)').matches; // điện thoại/tablet: giảm số hạt trang trí
   var cd=document.getElementById('candles');
-  if(cd) for(var q=0;q<36;q++){var c=document.createElement('i');c.className='candle';var x=50+(Math.random()+Math.random()+Math.random()-1.5)*72;c.style.cssText='--x:'+x+'%;--w:'+(4+Math.random()*3)+'px;--h:'+(14+Math.random()*32)+'px;--b:'+(Math.random()*5)+'vh;--f:'+(.45+Math.random()*.7)+'s;--dl:-'+(Math.random()*2)+'s';cd.appendChild(c)}
+  if(cd) for(var q=0;q<(lite?14:22);q++){var c=document.createElement('i');c.className='candle';var x=50+(Math.random()+Math.random()+Math.random()-1.5)*72;c.style.cssText='--x:'+x+'%;--w:'+(4+Math.random()*3)+'px;--h:'+(14+Math.random()*32)+'px;--b:'+(Math.random()*5)+'vh;--f:'+(.45+Math.random()*.7)+'s;--dl:-'+(Math.random()*2)+'s';cd.appendChild(c)}
   var eb=document.getElementById('embers');
-  if(eb) for(var k=0;k<28;k++){var e=document.createElement('span');e.style.cssText='left:'+(Math.random()*100)+'%;--s:'+(2+Math.random()*4)+'px;--d:'+(6+Math.random()*7)+'s;--l:-'+(Math.random()*12)+'s;--x:'+(Math.random()*90-45)+'px';eb.appendChild(e)}
+  if(eb) for(var k=0;k<(lite?8:14);k++){var e=document.createElement('span');e.style.cssText='left:'+(Math.random()*100)+'%;--s:'+(2+Math.random()*4)+'px;--d:'+(6+Math.random()*7)+'s;--l:-'+(Math.random()*12)+'s;--x:'+(Math.random()*90-45)+'px';eb.appendChild(e)}
   var steps=document.querySelectorAll('.step'), dots=document.getElementById('dots'), di=dots.children;
   var what=document.getElementById('what'), when=document.getElementById('when');
   var cur=0, swapT=0, hT=0, card=document.getElementById('card'), rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -147,7 +148,7 @@
   no.addEventListener('touchstart',function(e){var t=e.touches[0]; lastX=t.clientX; lastY=t.clientY; dodge(e)},{passive:false});
   no.addEventListener('click',dodge);
   document.addEventListener('pointermove',function(e){
-    if(e.pointerType!=='mouse'||!document.querySelectorAll('.step')[3].classList.contains('on')) return;
+    if(e.pointerType!=='mouse'||!steps[3].classList.contains('on')) return;
     track(e);
     var r=no.getBoundingClientRect();
     if(Math.hypot(e.clientX-(r.left+r.width/2),e.clientY-(r.top+r.height/2))<r.width/2+70) dodge();
@@ -160,30 +161,35 @@
     msg='Chốt kèo nhé Ngỹn Gie Nhe!'+(w?' Mình đi: '+w+'.':'')+(t?' Thời gian: '+t+'.':'')+' Không được bùng đâu đó 🐱💗';
     go(4);
     document.body.classList.add('party');
-    burst(); setTimeout(burst,900); setTimeout(burst,1900);
+    burst(); setTimeout(burst,1100);
   });
-  var fx=document.getElementById('fx'), hcat=document.getElementById('hcat'), tapN=0;
-  function life(el){el.addEventListener('animationend',function(){el.remove()}); fx.appendChild(el)}
+  var fx=document.getElementById('fx'), hcat=document.getElementById('hcat'), tapN=0, lastBurst=0, MAXFX=lite?36:64;
+  fx.addEventListener('animationend',function(e){e.target.remove()}); // 1 listener cho tất cả hạt
+  /* pháo hoa: ít hạt hơn, dựng 1 lần bằng DocumentFragment, có trần số hạt + chặn bấm dồn */
   function burst(){
-    var em=['🕯️','💜','🩷','🐾','✨','🦋','🎉'], cols=['#8b6dff','#e64aa8','#ff5fae','#46d6d9','#f4efff','#ffd166'], i, s, side;
-    for(i=0;i<44;i++){
+    var now=Date.now(); if(now-lastBurst<350) return; lastBurst=now;
+    var left=MAXFX-fx.childElementCount; if(left<=0) return;
+    var em=['🕯️','💜','🩷','🐾','✨','🦋','🎉'], cols=['#8b6dff','#e64aa8','#ff5fae','#46d6d9','#f4efff','#ffd166'],
+        nR=lite?10:16, nC=lite?8:12, nE=lite?3:5, frag=document.createDocumentFragment(), i, s, side;
+    for(i=0;i<nR&&left>0;i++,left--){
       s=document.createElement('span'); s.className='cf';
       s.style.cssText='left:'+(Math.random()*100)+'%;--w:'+(5+Math.random()*6)+'px;--h:'+(8+Math.random()*8)+'px;--c:'+cols[i%cols.length]+';--t:'+(2.6+Math.random()*2)+'s;--dl:'+(Math.random()*.6)+'s;--dx:'+(Math.random()*160-80)+'px;--r:'+(360+Math.random()*720)+'deg';
-      life(s);
+      frag.appendChild(s);
     }
-    for(i=0;i<26;i++){
+    for(i=0;i<nC&&left>0;i++,left--){
       side=i%2; s=document.createElement('span'); s.className='cf cn';
       s.style.cssText=(side?'right:0;':'left:0;')+'--w:'+(5+Math.random()*5)+'px;--h:'+(8+Math.random()*7)+'px;--c:'+cols[i%cols.length]+';--t:'+(1.8+Math.random()*1.2)+'s;--dl:'+(Math.random()*.25)+'s;--dx:'+((side?-1:1)*(70+Math.random()*190))+'px;--up:'+(38+Math.random()*42)+'vh;--r:'+(360+Math.random()*720)+'deg';
-      life(s);
+      frag.appendChild(s);
     }
-    for(i=0;i<12;i++){
+    for(i=0;i<nE&&left>0;i++,left--){
       s=document.createElement('span'); s.textContent=em[i%em.length];
       s.style.left=(Math.random()*92)+'%'; s.style.animationDelay=(Math.random()*.7)+'s'; s.style.fontSize=(1.1+Math.random())+'rem';
-      life(s);
+      frag.appendChild(s);
     }
+    fx.appendChild(frag);
   }
   function tapCat(){
-    var t=document.getElementById('tap'), L=['Yay! 🎉','Thêm nữa nè 💜','Vui quá trời 🦋','Mèo xoay vòng vòng 🐾','Happy happy happy ✨'];
+    var t=document.getElementById('tap'), L=['Yay! 🎉','Thêm nữa nè 💜','Vui quá trời 🦋','Mèo xoay vòng vòng 🐾','Happi happi happi ✨'];
     var tg=(cg&&!cg.hidden)?cg:hcat;
     tg.classList.remove('spin'); void tg.getBoundingClientRect(); tg.classList.add('spin');
     t.textContent=L[tapN++%L.length]; burst();

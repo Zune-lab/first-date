@@ -23,17 +23,25 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
+/* thanh cuộn mảnh tím–hồng (thay thanh mặc định) */
+*{scrollbar-width:thin;scrollbar-color:var(--violet) transparent}
+@supports not (scrollbar-color:auto){
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{border-radius:8px;border:2px solid transparent;background:linear-gradient(180deg,var(--violet),var(--mag));background-clip:content-box}
+}
 body{margin:0;font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:300;color:var(--ink);
   background:linear-gradient(180deg,var(--sky1),var(--sky2) 55%,var(--sky3)) fixed;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:var(--vig)}
-body::after{content:"";position:fixed;inset:0;z-index:30;pointer-events:none;opacity:.1;mix-blend-mode:overlay;
+body::after{content:"";position:fixed;inset:0;z-index:30;pointer-events:none;opacity:.05;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
 /* ===== cảnh nhà nguyện ===== */
-.blob{position:fixed;z-index:-2;border-radius:50%;filter:blur(80px);pointer-events:none;animation:flow 18s ease-in-out infinite alternate}
-.o1{width:320px;height:420px;background:var(--violet);opacity:.4;top:-120px;left:-120px}
-.o2{width:340px;height:420px;background:var(--mag);opacity:.3;bottom:-160px;right:-140px;animation-duration:22s}
-.o3{width:240px;height:300px;background:var(--teal);opacity:.16;top:38%;left:56%;animation-duration:26s}
+/* blob: dùng radial-gradient mềm thay cho filter:blur(80px) (blur lớn + animation rất tốn GPU) */
+.blob{position:fixed;z-index:-2;pointer-events:none;animation:flow 18s ease-in-out infinite alternate;will-change:transform}
+.o1{width:480px;height:580px;background:radial-gradient(closest-side,rgba(139,109,255,.95),rgba(139,109,255,.5) 45%,transparent);opacity:.4;top:-200px;left:-200px}
+.o2{width:500px;height:580px;background:radial-gradient(closest-side,rgba(230,74,168,.95),rgba(230,74,168,.5) 45%,transparent);opacity:.3;bottom:-240px;right:-220px;animation-duration:22s}
+.o3{width:400px;height:460px;background:radial-gradient(closest-side,rgba(70,214,217,.95),rgba(70,214,217,.5) 45%,transparent);opacity:.16;top:calc(38% - 80px);left:calc(56% - 80px);animation-duration:26s}
 @keyframes flow{to{transform:translate3d(30px,-40px,0) scale(1.15)}}
 .scene{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
 .scene::before{content:"";position:absolute;top:0;left:50%;width:120vw;height:85vh;transform:translateX(-50%);
@@ -49,13 +57,15 @@ body::after{content:"";position:fixed;inset:0;z-index:30;pointer-events:none;opa
   background-size:34px 11px,52px 14px;background-position:0 0,13px 0;
   -webkit-mask-image:linear-gradient(#000 30%,transparent);mask-image:linear-gradient(#000 30%,transparent)}
 @keyframes sway2{from{transform:translateX(-50%) rotate(-.5deg)}to{transform:translateX(-50%) rotate(.5deg)}}
-.prism{position:absolute;left:4%;top:26%;width:560px;height:90px;transform:rotate(-38deg);filter:blur(38px);opacity:.3;mix-blend-mode:screen;animation:prism 20s ease-in-out infinite alternate;
-  background:linear-gradient(90deg,#ff5fae,#ffb24f,#fff56a,#5fe3a1,#46d6d9,#7b5cff,#e64aa8)}
+/* prism: bỏ blur(38px), làm mềm viền bằng mask (cao hơn 90px→200px để bù phần blur lan ra) */
+.prism{position:absolute;left:4%;top:calc(26% - 55px);width:620px;height:200px;transform:rotate(-38deg);opacity:.3;mix-blend-mode:screen;animation:prism 20s ease-in-out infinite alternate;
+  background:linear-gradient(90deg,#ff5fae,#ffb24f,#fff56a,#5fe3a1,#46d6d9,#7b5cff,#e64aa8);
+  -webkit-mask-image:radial-gradient(closest-side,#000 25%,transparent);mask-image:radial-gradient(closest-side,#000 25%,transparent)}
 @keyframes prism{to{transform:rotate(-30deg) translate(40px,30px);opacity:.18}}
-.spark{position:absolute;width:26px;height:26px;background:#fff;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);filter:drop-shadow(0 0 6px #cfc3ff);animation:tw 3.6s ease-in-out infinite}
+.spark{position:absolute;width:26px;height:26px;background:#fff;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);animation:tw 3.6s ease-in-out infinite}
 .spark.a{left:16%;top:18%}.spark.b{right:14%;top:34%;width:18px;height:18px;animation-delay:1.4s}
 @keyframes tw{0%,100%{opacity:.15;transform:scale(.6) rotate(0)}50%{opacity:1;transform:scale(1) rotate(45deg)}}
-.fog{position:absolute;bottom:-8vh;width:150%;height:38vh;left:-25%;background:radial-gradient(ellipse at 50% 60%,var(--fog),transparent 65%);filter:blur(24px);animation:drift 30s ease-in-out infinite alternate}
+.fog{position:absolute;bottom:-8vh;width:150%;height:38vh;left:-25%;background:radial-gradient(ellipse at 50% 60%,var(--fog),transparent 65%);animation:drift 30s ease-in-out infinite alternate}
 .fog.f2{bottom:-14vh;opacity:.7;animation-duration:44s;animation-direction:alternate-reverse}
 @keyframes drift{to{transform:translateX(12%)}}
 .statue{position:absolute;bottom:0;height:min(50vh,400px);aspect-ratio:80/240;fill:var(--stat);filter:drop-shadow(0 0 16px rgba(139,109,255,.5))}
@@ -123,7 +133,7 @@ p{margin:0}
 .tile::before,.row::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--grad);opacity:0;transform:scale(.88);transition:opacity .45s var(--ease),transform .55s var(--ease)}
 .tile[aria-pressed="true"],.row[aria-pressed="true"]{color:#fff;border-color:transparent}
 .tile[aria-pressed="true"]::before,.row[aria-pressed="true"]::before{opacity:1;transform:none}
-.tile:hover,.row:hover{border-color:var(--lilac);transform:translateY(-2px)}
+@media (hover:hover){.tile:hover,.row:hover{border-color:var(--lilac);transform:translateY(-2px)}}
 .tile:active,.row:active{transform:scale(.96)}
 .tile::after{content:"✦";position:absolute;top:8px;right:12px;font-size:.7rem;opacity:0;transform:rotate(-120deg) scale(0);transition:opacity .4s var(--ease),transform .6s var(--spring)}
 .tile[aria-pressed="true"]::after{opacity:1;transform:none}
@@ -131,17 +141,14 @@ p{margin:0}
 
 .btn{font:inherit;font-weight:500;font-size:1rem;letter-spacing:.04em;border:0;cursor:pointer;border-radius:999px;min-height:56px;width:100%;color:#fff;
   position:relative;overflow:hidden;background:var(--grad);box-shadow:0 10px 30px rgba(139,109,255,.4),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .5s var(--spring),box-shadow .4s var(--ease)}
-.btn:hover{box-shadow:0 14px 38px rgba(230,74,168,.45),inset 0 1px 0 rgba(255,255,255,.4)}
+@media (hover:hover){.btn:hover{box-shadow:0 14px 38px rgba(230,74,168,.45),inset 0 1px 0 rgba(255,255,255,.4)}}
 .btn:active{transform:scale(.97)}
-.btn::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.22);transform:translateX(-101%) skewX(-18deg);transition:transform .6s var(--ease);pointer-events:none}
-.btn:hover::before{transform:translateX(0) skewX(-18deg)}
-.btn.shine::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:sh 4s ease-in-out 1s infinite}
-@keyframes sh{0%,60%{left:-60%}100%{left:140%}}
+.btn.shine::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:sh 4s ease-in-out 1s infinite;will-change:transform}
+@keyframes sh{0%,60%{transform:translateX(0) skewX(-20deg)}100%{transform:translateX(500%) skewX(-20deg)}}
 .btn.alt{color:var(--ink);box-shadow:none;border:1.5px solid transparent;background:linear-gradient(var(--card2),var(--card2)) padding-box,var(--holo) border-box}
 :root[data-theme="light"] .btn.alt{background:linear-gradient(var(--card1),var(--card1)) padding-box,var(--holo) border-box}
-.btn.alt::before{background:rgba(139,109,255,.2)}
 .back{font:inherit;font-size:.88rem;color:var(--soft);background:none;border:0;cursor:pointer;min-height:44px;padding:0 16px;margin-top:6px;transition:color .3s}
-.back:hover{color:var(--lilac)}
+@media (hover:hover){.back:hover{color:var(--lilac)}}
 a.btn{display:flex;align-items:center;justify-content:center;text-decoration:none}
 
 .sum{text-align:left;margin:0 0 22px;padding:6px 18px;border-radius:20px;background:var(--fill2);border:1px solid var(--line)}
@@ -159,7 +166,7 @@ a.btn{display:flex;align-items:center;justify-content:center;text-decoration:non
   transition:border-color .4s var(--ease),box-shadow .4s var(--ease),transform .5s var(--spring)}
 .fld small{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:.95rem;color:var(--lilac)}
 .fld span{font-size:1.02rem}.fld span.ph{color:var(--soft)}
-.fld:hover{border-color:var(--lilac)}.fld:active{transform:scale(.98)}
+@media (hover:hover){.fld:hover{border-color:var(--lilac)}}.fld:active{transform:scale(.98)}
 .fld[aria-expanded="true"]{border-color:var(--violet);box-shadow:0 0 0 3px rgba(139,109,255,.3)}
 
 .pan{padding:12px;border-radius:22px;background:var(--fill2);border:1px solid var(--line);animation:rise .5s var(--ease)}
@@ -167,11 +174,11 @@ a.btn{display:flex;align-items:center;justify-content:center;text-decoration:non
 .calh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .calh b{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;font-size:1.3rem}
 .nav{width:44px;height:44px;border-radius:50%;border:0;background:none;color:var(--lilac);font-size:1.6rem;line-height:1;cursor:pointer;transition:background .3s}
-.nav:hover:not(:disabled){background:var(--fill2)}.nav:disabled{opacity:.25;cursor:default}
+@media (hover:hover){.nav:hover:not(:disabled){background:var(--fill2)}}.nav:disabled{opacity:.25;cursor:default}
 .wd,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
 .wd span{font-size:.72rem;color:var(--soft);padding:4px 0}
 .day{font:inherit;font-size:.92rem;color:var(--ink);height:42px;border-radius:50%;border:0;background:none;cursor:pointer;padding:0;transition:background .3s var(--ease),transform .4s var(--spring)}
-.day:hover:not(:disabled){background:var(--fill2)}.day:disabled{opacity:.28;cursor:default}
+@media (hover:hover){.day:hover:not(:disabled){background:var(--fill2)}}.day:disabled{opacity:.28;cursor:default}
 .day:active:not(:disabled),.tm:active{transform:scale(.92)}
 .day[aria-pressed="true"],.tm[aria-pressed="true"]{background:var(--grad);color:#fff;font-weight:500;border-color:transparent;box-shadow:0 6px 16px rgba(139,109,255,.45)}
 .times{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
@@ -215,16 +222,20 @@ a.btn{display:flex;align-items:center;justify-content:center;text-decoration:non
   .embers{display:none}.card,:root,.btn,.tile,.row,.no.fly{transition:none}.btn::before,.tile::before,.row::before,.tile::after{transition:none}}
 
 /* ===== đèn hai bên: tối = đèn rọi quét · sáng = đèn lồng đung đưa ===== */
+/* đèn quét: bỏ filter:blur + animation hue-rotate (bắt vẽ lại cả khối mỗi frame).
+   Viền mềm bằng conic stops; đổi màu lilac↔hồng bằng crossfade opacity (chỉ tốn compositor) */
 .beam{position:absolute;bottom:-4vh;left:var(--bx);width:70vh;height:112vh;margin-left:-35vh;transform-origin:50% 100%;mix-blend-mode:screen;opacity:1;
-  background:conic-gradient(from -13deg at 50% 100%,rgba(214,200,255,.55) 0 26deg,transparent 26deg);
+  background:conic-gradient(from -13deg at 50% 100%,transparent 0,rgba(214,200,255,.55) 2deg,rgba(214,200,255,.55) 24deg,transparent 26deg);
   -webkit-mask-image:linear-gradient(0deg,#000 5%,transparent 92%);mask-image:linear-gradient(0deg,#000 5%,transparent 92%);
-  filter:blur(6px);animation:sweepL 7s ease-in-out infinite alternate,hue 12s linear infinite alternate;transition:opacity .9s var(--ease)}
+  animation:sweepL 7s ease-in-out infinite alternate;transition:opacity .9s var(--ease)}
+.beam::before{content:"";position:absolute;inset:0;background:conic-gradient(from -13deg at 50% 100%,transparent 0,rgba(255,140,215,.55) 2deg,rgba(255,140,215,.55) 24deg,transparent 26deg);animation:tint 12s ease-in-out infinite alternate}
 .beam.l{--bx:7%}
-.beam.r{--bx:93%;animation-name:sweepR,hue;animation-duration:8.5s,15s;animation-delay:-3s,-5s}
+.beam.r{--bx:93%;animation-name:sweepR;animation-duration:8.5s;animation-delay:-3s}
+.beam.r::before{animation-duration:15s;animation-delay:-5s}
 .beam::after{content:"";position:absolute;left:50%;bottom:0;width:90px;height:90px;transform:translate(-50%,50%);border-radius:50%;background:radial-gradient(circle,#fff,rgba(255,150,220,.6) 40%,transparent 70%)}
 @keyframes sweepL{from{transform:rotate(-14deg)}to{transform:rotate(30deg)}}
 @keyframes sweepR{from{transform:rotate(14deg)}to{transform:rotate(-30deg)}}
-@keyframes hue{from{filter:blur(6px) hue-rotate(-50deg)}to{filter:blur(6px) hue-rotate(70deg)}}
+@keyframes tint{from{opacity:0}to{opacity:1}}
 .lantern{position:absolute;top:var(--y);left:var(--x);width:calc(46px*var(--s));height:calc(60px*var(--s));margin-left:-23px;opacity:0;transition:opacity .9s var(--ease);
   transform-origin:50% calc(var(--y)*-1);animation:swing 5.5s ease-in-out var(--d) infinite alternate;
   border-radius:50%/42%;background:radial-gradient(circle at 50% 58%,#fffafc 0,#ffc6df 42%,#e87db2 100%);
@@ -255,7 +266,7 @@ a.btn{display:flex;align-items:center;justify-content:center;text-decoration:non
 .fx span.cn{top:auto;bottom:0;animation-name:shoot;animation-timing-function:ease-out}
 @keyframes cfall{to{transform:translate3d(var(--dx),112vh,0) rotate(var(--r));opacity:.9}}
 @keyframes shoot{0%{transform:translate(0,0) rotate(0)}40%{transform:translate(calc(var(--dx)*.75),calc(var(--up)*-1)) rotate(calc(var(--r)*.4))}100%{transform:translate(var(--dx),30vh) rotate(var(--r));opacity:0}}
-.party .beam{animation-duration:2.6s,6s!important}.party .beam.r{animation-duration:3.1s,7s!important}
+.party .beam{animation-duration:2.6s!important}.party .beam.r{animation-duration:3.1s!important}
 @media (prefers-reduced-motion:reduce){.step.on>.cat.happy,.wave .l{animation:none!important}.fx span.cf{display:none}}
 .clapgif{display:block;width:124px;max-height:124px;height:auto;margin:0 auto 8px;object-fit:contain;border-radius:20px;cursor:pointer}
 .clapgif[hidden]{display:none}

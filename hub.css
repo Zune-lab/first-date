@@ -9,11 +9,18 @@
   --paper:#2a0a2a;--black:#fff1e6;--lilac:#7b4dff;color-scheme:light}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg)}
+/* thanh cuộn mảnh (thay thanh mặc định) */
+*{scrollbar-width:thin;scrollbar-color:var(--hot) transparent}
+@supports not (scrollbar-color:auto){
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{border-radius:8px;border:2px solid transparent;background:linear-gradient(180deg,var(--hot),var(--lilac));background-clip:content-box}
+}
 body{margin:0;min-height:100svh;background:
   radial-gradient(120% 55% at 100% 0,rgba(255,46,136,.30),transparent 60%),
   radial-gradient(100% 45% at 0 100%,rgba(123,77,255,.32),transparent 60%),var(--bg);
   color:var(--ink);font-family:"Be Vietnam Pro",system-ui,sans-serif;font-weight:300;overflow-x:hidden;transition:background .5s,color .5s}
-.grain{position:fixed;inset:0;z-index:20;pointer-events:none;opacity:.09;mix-blend-mode:overlay;
+.grain{position:fixed;inset:0;z-index:20;pointer-events:none;opacity:.05;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
 /* băng chữ chạy */
