@@ -1,7 +1,7 @@
 /* Gửi thông báo về Discord qua webhook. Hàm giftNotify trả về Promise<true|false>.
    An toàn hơn: thay ENDPOINT bằng URL Cloudflare Worker (xem worker/worker.js). */
 (function(){
-  var ENDPOINT=''; // dán URL Cloudflare Worker (KHÔNG dán URL webhook Discord vào repo công khai)
+  var ENDPOINT=window.GIFT_LOCAL_ENDPOINT||''; // production: dán URL Cloudflare Worker vào đây. Test máy mình: dùng config.local.js (không đẩy lên git)
   var ua=navigator.userAgent, dev=/iPhone|iPad/.test(ua)?'iPhone/iPad':/Android/.test(ua)?'Android':/Mac/.test(ua)?'Mac':/Windows/.test(ua)?'Windows':'Khác';
   window.giftNotify=function(title,extra,opt){
     opt=opt||{};
