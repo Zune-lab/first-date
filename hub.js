@@ -1,5 +1,20 @@
 (function(){
   var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* băng chữ chạy: đợi font tải xong mới đo, nhân bản nhóm chữ cho phủ hết chiều rộng, trượt đúng 1 nhóm (px chính xác) */
+  (function(){
+    var run=document.querySelector('.run'), src=run&&run.firstElementChild, SPEED=55, rt=0; if(!src) return;
+    function build(){
+      var w=parseFloat(getComputedStyle(src).width); if(!(w>0)) return;
+      var n=Math.ceil(innerWidth/w)+1; while(run.children.length>1) run.removeChild(run.lastChild);
+      for(var i=1;i<n;i++) run.appendChild(src.cloneNode(true));
+      run.style.setProperty('--g',w+'px'); run.style.setProperty('--dur',(w/SPEED)+'s'); run.classList.add('on');
+    }
+    var started=false, timeout=new Promise(function(r){setTimeout(r,2000)}),
+        fl=(document.fonts&&document.fonts.load)?document.fonts.load('700 16px "Barlow Condensed"',src.textContent).catch(function(){}):Promise.resolve();
+    Promise.race([fl,timeout]).then(function(){started=true;build()}); // chỉ bắt đầu chạy khi font đã sẵn sàng (hoặc quá 2s)
+    if(document.fonts&&document.fonts.addEventListener) document.fonts.addEventListener('loadingdone',function(){if(started) build()}); // font về trễ: đo lại
+    addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(build,150)});
+  })();
   var tb=document.getElementById('theme'), root=document.documentElement, dark=true;
   try{dark=localStorage.getItem('gift-theme')!=='light'}catch(e){}
   function apply(){root.setAttribute('data-theme',dark?'dark':'light');tb.setAttribute('aria-checked',dark)} apply();

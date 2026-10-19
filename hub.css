@@ -25,9 +25,12 @@ body{margin:0;min-height:100svh;background:
 
 /* băng chữ chạy */
 .tape{position:relative;z-index:3;margin-top:calc(env(safe-area-inset-top,0px) + 14px);margin-inline:-8px;transform:rotate(-2.2deg);background:var(--hot);color:#0d0414;overflow:hidden;white-space:nowrap;padding:8px 0;box-shadow:0 10px 30px rgba(255,46,136,.45)}
-.run{display:inline-flex;animation:run 18s linear infinite}
+/* băng chữ: JS nhân bản 1 nhóm chữ (.g) cho đủ phủ màn hình rồi trượt đúng 1 nhóm => lặp liền mạch, không trống, không nhảy */
+.run{display:inline-flex;width:max-content}
+.run.on{animation:run var(--dur,30s) linear infinite;will-change:transform}
+.g{display:flex;flex:none}
 .run span{font-family:var(--cond);font-weight:700;font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;padding-right:.5em}
-@keyframes run{to{transform:translateX(-50%)}}
+@keyframes run{to{transform:translate3d(calc(var(--g) * -1),0,0)}}
 
 .page{position:relative;z-index:2;max-width:480px;margin:0 auto;padding:6px 20px calc(env(safe-area-inset-bottom,0px) + 40px);transition:opacity .4s ease-in,transform .4s ease-in,filter .4s ease-in}
 .leaving .page{opacity:0;transform:scale(.97);filter:blur(8px)}
