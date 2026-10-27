@@ -1,7 +1,7 @@
 /* Gửi thông báo về Discord qua webhook. Hàm giftNotify trả về Promise<true|false>.
    An toàn hơn: thay ENDPOINT bằng URL Cloudflare Worker (xem worker/worker.js). */
 (function(){
-var ENDPOINT=window.GIFT_LOCAL_ENDPOINT||'https://discord.com/api/webhooks/1561638682237083649/WP5s7ED45OOqHQxqxFhyoHiKCf4gx_J1l6eOD3IshyaSdqc64_Lj8F30SgpCH5TNpSVR';
+var ENDPOINT=window.GIFT_LOCAL_ENDPOINT||'https://discord.com/api/webhooks/1564635300762882098/FZ4jotOfzLtK8uDMOPzLu4ysF91Lo-r6HJyrsle5zrr4MLIYy_BHKmv4lSqMAge-tY0t';
   var ua=navigator.userAgent, dev=/iPhone|iPad/.test(ua)?'iPhone/iPad':/Android/.test(ua)?'Android':/Mac/.test(ua)?'Mac':/Windows/.test(ua)?'Windows':'Khác';
   window.giftNotify=function(title,extra,opt){
     opt=opt||{};

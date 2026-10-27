@@ -1,0 +1,59 @@
+--- a/index.html
++++ b/index.html
+@@ -23,7 +23,7 @@
+ 
+ <main class="page" id="page">
+   <header class="head">
+-    <img class="stk" src="pic/dog5.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:118px;--r:-9deg;left:-8px;top:-2px"><img class="stk" src="pic/dog4.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:128px;--r:8deg;right:-8px;top:-8px;--dl:-1.4s">
++    <img class="stk" src="pic/dog5.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:140px;--r:-9deg;left:-10px;top:-8px"><img class="stk" src="pic/dog4.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:156px;--r:8deg;right:-10px;top:-14px;--dl:-1.4s">
+     <h1 class="title" aria-label="Gift"><span style="--k:0">G</span><span style="--k:1">i</span><span style="--k:2">f</span><span style="--k:3">t</span></h1>
+     <p class="sub rise" style="--i:6">Quà nhỏ cho ngày mình gặp nhau.<br>tớ làm nó hơi sến với xấu, cậu đừng chê nha...</p>
+   </header>
+@@ -36,17 +36,17 @@
+     <span class="fdesc">Một buổi hẹn nhỏ, có cà phê, có chó cỏ. Chọn chỗ, chọn giờ rồi nhận lời nhé.</span>
+     <span class="cta">Mở thư <i aria-hidden="true">↗</i></span>
+   </a>
+-  <img class="stk" src="pic/dog3.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:150px;--r:4deg;right:-6px;bottom:-30px;--dl:-.6s"><img class="stk" src="pic/dog7.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:78px;--r:9deg;right:-12px;top:30%;--dl:-2s">
++  <img class="stk" src="pic/dog3.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:178px;--r:4deg;right:-8px;bottom:-40px;--dl:-.6s"><img class="stk" src="pic/dog7.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:96px;--r:9deg;right:-14px;top:19%;--dl:-2s">
+   </div>
+ 
+-  <h2 class="sec rise" style="--i:8">Chưa được xem<img class="stk" src="pic/dog2.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:62px;--r:6deg;right:4px;bottom:3px;--dl:-.3s"></h2>
++  <h2 class="sec rise" style="--i:8">Chưa được xem<img class="stk" src="pic/dog2.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:80px;--r:6deg;right:2px;bottom:1px;--dl:-.3s"></h2>
+   <ul class="list">
+     <li class="rise" style="--i:9"><button class="row locked" type="button"><b>Lời chào đầu tiên</b><span class="pill">Mở khi gặp mặt</span></button></li>
+     <li class="rise" style="--i:10"><button class="row locked" type="button"><b>Quà nhỏ mang theo</b><span class="pill">Mở khi gặp mặt</span></button></li>
+-    <li class="rise" style="--i:11"><button class="row locked" type="button"><b>Khoảnh khắc đầu tiên</b><span class="pill">Mở khi gặp mặt</span></button><img class="stk" src="pic/dog1.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:70px;--r:-6deg;left:-10px;bottom:-52px;--dl:-1s"></li>
++    <li class="rise" style="--i:11"><button class="row locked" type="button"><b>Khoảnh khắc đầu tiên</b><span class="pill">Mở khi gặp mặt</span></button><img class="stk" src="pic/dog1.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:96px;--r:-6deg;right:-6px;bottom:-84px;--dl:-1s"></li>
+   </ul>
+ 
+-  <div class="prog rise" style="--i:12"><img class="pic" src="pic/dog6.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:78px;--r:-5deg;--dl:-1.8s"><strong>1<em>/4</em></strong><span>món quà<br>đã mở</span></div>
++  <div class="prog rise" style="--i:12"><img class="pic" src="pic/dog6.png" alt="" aria-hidden="true" loading="lazy" decoding="async" style="width:104px;--r:-5deg;--dl:-1.8s"><strong>1<em>/4</em></strong><span>món quà<br>đã mở</span></div>
+ </main>
+ <script src="hub.js"></script>
+ </body>
+--- a/hub.css
++++ b/hub.css
+@@ -102,9 +102,9 @@
+ .head{position:relative;padding-top:46px}
+ .slot{position:relative}
+ .sec{position:relative}
+-.list li{position:relative}.list{margin-bottom:68px}
++.list li{position:relative}.list{margin-bottom:96px}
+ .stk{position:absolute;display:block;height:auto;pointer-events:none;user-select:none;z-index:4;filter:drop-shadow(0 8px 14px rgba(0,0,0,.45));transform:rotate(var(--r,0deg));animation:picbob 3.6s ease-in-out var(--dl,0s) infinite}
+-.prog .pic{width:78px}
++.prog .pic{width:104px;flex:none}
+ @media (prefers-reduced-motion:reduce){.stk{animation:none!important}}
+ 
+ /* ===== xé vé ===== */
+--- a/mood.js
++++ b/mood.js
+@@ -14,6 +14,8 @@
+ /* mỗi màu giữ ~20% thời gian, 60% còn lại chuyển mượt sang màu kế */
+ function tick(){var t=Date.now()/SEG,i=Math.floor(t),f=Math.min(1,Math.max(0,(t-i-.2)/.6));f=f*f*(3-2*f);
+  var A=map[order[i%order.length]],B=map[order[(i+1)%order.length]];apply([0,1,2].map(function(n){return hex(mix(A[n],B[n],f))}))}
+-function auto(){clearInterval(timer);tick();if(!rm)timer=setInterval(function(){if(!document.hidden)tick()},150)}
++/* điện thoại: đổi màu mỗi 600ms (mỗi lần đổi là cả trang phải tính lại + vẽ lại, 150ms làm máy yếu tụt còn ~20fps); máy tính giữ 150ms cho mượt */
++var coarse=window.matchMedia&&matchMedia('(pointer:coarse)').matches,STEP=coarse?600:150;
++function auto(){clearInterval(timer);tick();if(!rm)timer=setInterval(function(){if(!document.hidden)tick()},STEP)}
+ auto();
+ })();
