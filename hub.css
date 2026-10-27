@@ -121,3 +121,9 @@ body{margin:0;min-height:100svh;background:
 .feature.tear::before,.feature.tear .cta::before{animation:none}
 .rip-glow{position:fixed;z-index:41;height:4px;border-radius:4px;pointer-events:none;transform-origin:left;background:#fff;box-shadow:0 0 18px 6px #ff2e88,0 0 46px 14px rgba(180,140,255,.7)}
 .bit{position:fixed;z-index:41;pointer-events:none;border-radius:1px}
+/* sticker chó dán rải rác */
+.pics{display:flex;justify-content:center;align-items:flex-end;gap:10px;margin:0 0 30px}
+.pic{display:block;height:auto;width:var(--w,96px);max-width:34%;pointer-events:none;user-select:none;
+  filter:drop-shadow(0 6px 12px rgba(0,0,0,.4));transform:rotate(var(--r,0deg));animation:picbob 3.6s ease-in-out var(--dl,0s) infinite}
+@keyframes picbob{50%{transform:translateY(-6px) rotate(calc(var(--r,0deg) + 3deg))}}
+@media (prefers-reduced-motion:reduce){.pic{animation:none!important}}

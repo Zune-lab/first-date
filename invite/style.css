@@ -271,3 +271,13 @@ a.btn{display:flex;align-items:center;justify-content:center;text-decoration:non
 .clapgif{display:block;width:124px;max-height:124px;height:auto;margin:0 auto 8px;object-fit:contain;border-radius:20px;cursor:pointer}
 .clapgif[hidden]{display:none}
 .step.on>.clapgif.spin{animation:spin .8s var(--spring)}
+
+/* sticker chó dán quanh thiệp */
+.step{position:relative}
+.stk{position:absolute;display:block;height:auto;width:var(--w,84px);pointer-events:none;user-select:none;z-index:3;
+  filter:drop-shadow(0 6px 12px rgba(0,0,0,.4));transform:rotate(var(--r,0deg));animation:stkbob 3.6s ease-in-out var(--dl,0s) infinite}
+@keyframes stkbob{50%{transform:translateY(-6px) rotate(calc(var(--r,0deg) + 3deg))}}
+.finpic{display:block;width:150px;max-width:60%;height:auto;margin:6px auto 4px;filter:drop-shadow(0 8px 16px rgba(0,0,0,.35))}
+@media (prefers-reduced-motion:reduce){.stk{animation:none!important}}
+.step.on>.stk{animation:stkbob 3.6s ease-in-out var(--dl,0s) infinite}
+@media (prefers-reduced-motion:reduce){.step.on>.stk{animation:none!important}}

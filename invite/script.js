@@ -119,7 +119,7 @@
   when.addEventListener('input',sync);
 
   var no=document.getElementById('no'), yes=document.getElementById('yes'), zone=document.getElementById('zone'), hint=document.getElementById('hint');
-  var lines=['Ơ, nút bay mất tiêu rồi 🙈','Mèo bảo bấm nút hồng đi 🐱','Thử lại lần nữa? Vẫn bay nhé 🪽','Chạy đâu cho thoát 💨','Nút này có cánh đó nha ✈️','Hết cửa rồi, bấm nút hồng thôi 💗'], n=0;
+  var lines=['Ơ, nút bay mất tiêu rồi 🙈','Cún bảo bấm nút hồng đi 🐶','Thử lại lần nữa? Vẫn bay nhé 🪽','Chạy đâu cho thoát 💨','Nút này có cánh đó nha ✈️','Hết cửa rồi, bấm nút hồng thôi 💗'], n=0;
   var flying=false, lastX=-999, lastY=-999;
   function growYes(){var k=Math.min(n,14),h=56+k*16;yes.style.minHeight=h+'px';yes.style.fontSize=(1+k*.07)+'rem';zone.style.height=Math.max(122,h+14)+'px';yes.classList.toggle('big',k>=5)}
   function dodge(e){
@@ -158,7 +158,7 @@
   var msg='';
   yes.addEventListener('click',function(){
     var w=placesText(), t=whenRaw();
-    msg='Chốt kèo nhé Ngỹn Gie Nhe!'+(w?' Mình đi: '+w+'.':'')+(t?' Thời gian: '+t+'.':'')+' Không được bùng đâu đó 🐱💗';
+    msg='Chốt kèo nhé Trâm!'+(w?' Mình đi: '+w+'.':'')+(t?' Thời gian: '+t+'.':'')+' Không được bùng đâu đó 🐶💗';
     go(4);
     document.body.classList.add('party');
     burst(); setTimeout(burst,1100);
@@ -189,7 +189,7 @@
     fx.appendChild(frag);
   }
   function tapCat(){
-    var t=document.getElementById('tap'), L=['Yay! 🎉','Thêm nữa nè 💜','Vui quá trời 🦋','Mèo xoay vòng vòng 🐾','Happi happi happi ✨'];
+    var t=document.getElementById('tap'), L=['Yay! 🎉','Thêm nữa nè 💜','Vui quá trời 🦋','Cún xoay vòng vòng 🐾','Happi happi happi ✨'];
     var tg=(cg&&!cg.hidden)?cg:hcat;
     tg.classList.remove('spin'); void tg.getBoundingClientRect(); tg.classList.add('spin');
     t.textContent=L[tapN++%L.length]; burst();
@@ -204,7 +204,7 @@
     e.preventDefault(); if(sending) return;
     var out=document.getElementById('copied'); if(!window.giftNotify){out.textContent='Thiếu file discord.js (kiểm tra thẻ script) 🥲';return}
     sending=true; out.textContent='Đang gửi…';
-    (window.giftNotify?giftNotify('💌 Ngỹn Gie Nhe vừa gửi lời nhắn',{'Đi đâu':placesText()||'Chưa chọn','Khi nào':whenRaw()||'Chưa chọn','Lời nhắn':(document.getElementById('note').value.trim()||'(không viết gì)')}):Promise.resolve(false)).then(function(ok){
+    (window.giftNotify?giftNotify('💌 Trâm vừa gửi lời nhắn',{'Đi đâu':placesText()||'Chưa chọn','Khi nào':whenRaw()||'Chưa chọn','Lời nhắn':(document.getElementById('note').value.trim()||'(không viết gì)')}):Promise.resolve(false)).then(function(ok){
       if(ok){out.textContent='Đã gửi rồi nha 💌';dc.textContent='Đã gửi ✓';document.getElementById('note').disabled=true}
       else{sending=false;out.textContent='Chưa gửi được, thử lại nhé 🥲'}
     });
